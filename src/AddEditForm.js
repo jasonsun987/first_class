@@ -1,4 +1,29 @@
 import React, { Component } from "react";
+import TextField from '@mui/material/TextField';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+
+const style = {
+  padding:'20px',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'white',
+  backgroundColor:'white',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+
 class AddEditForm extends Component {
     constructor(props) {
       super(props);
@@ -7,58 +32,52 @@ class AddEditForm extends Component {
     render() {
       const {employee,name,worktime,attend,date,ediID,onCustomizeValueChange,showFrom,onAddEdit,onCustomizeCancle}=this.props;
       return (
-        <div>
-        姓名:
-        <input
+        <Box >
+        <Modal
+        open={true}
+        onClose={onCustomizeCancle}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
 
-        onChange={(evt) => onCustomizeValueChange({name:'name',value:evt.target.value})}
-           /*  //onChange 后的evt是js自带的功能
-            console.log(evt.target.value); //直接拿到数据
-            this.setState({ name: evt.target.value }); //更新State */
-          value={name}
-        />{" "}
-        <br />
-        工时:
-        <input
-          onChange={(evt) => onCustomizeValueChange({name:'worktime',value:evt.target.value})}
-          value={worktime}
-        />{" "}
-        <br />
-        出勤:
-        {/* <input
-          onChange={(evt) => {
-            console.log(evt.target.value);
-            this.setState({ attend: evt.target.value });
-          }}
-          value={attend}
-        />{" "}
-        <br /> */}
-        <select 
-        value={attend} 
-        onChange={(evt) => onCustomizeValueChange({name:'attend',value:evt.target.value})}>
-            {/* option 是下拉选项 */}
-          <option value={false}></option> 
-          <option value={true}>是</option>
-          <option value={false}>否</option>
-        </select>
-        <br />
-        日期:
-        <input
-          onChange={(evt) => onCustomizeValueChange({name:'date',value:evt.target.value})}
-          value={date}
-        />{" "}
-        <br />
+        <div style={style}>
+          <FormControl fullWidth>
+            <br></br> <br></br>
+          <TextField onChange={(evt) => onCustomizeValueChange({name:'name',value:evt.target.value})} value={name} id="name" label="姓名" variant="standard" /> 
+          </FormControl>
+          
+          <FormControl fullWidth>
+          <br></br> <br></br>
+          <TextField onChange={(evt) => onCustomizeValueChange({name:'worktime',value:evt.target.value})}
+          value={worktime} id="worktime" label="工时" variant="standard" />
+          </FormControl>
 
+          <FormControl fullWidth>
+          <br></br> <br></br>
+                    <InputLabel id="attendance-label">出勤</InputLabel>
+                    <Select  value={attend} 
+                      onChange={(evt) => onCustomizeValueChange({name:'attend',value:evt.target.value})}
+                        labelId="attendance-label"
+                        id="attendance-label"
+                        variant="standard"
+                        // value={attendance}
+                        label="出勤"
+                    >
+                        <MenuItem value={false}></MenuItem>
+                        <MenuItem value={true}>是</MenuItem>
+                        <MenuItem value={false}>否</MenuItem>
+                    </Select>
+                </FormControl>
 
-
-        <button
-          onClick={() => { onCustomizeCancle({ showFrom: false }); }}
-        >
-          取消
-        </button>
-
-        <button
-          onClick={() => {
+        <FormControl fullWidth>
+        <br></br> <br></br>
+        <TextField onChange={(evt) => onCustomizeValueChange({name:'date',value:evt.target.value})}
+          value={date} id="data" label="日期" variant="standard" /> 
+        </FormControl>
+        <FormControl fullWidth>
+        <br></br> <br></br>
+        <Button onClick={() => { onCustomizeCancle({ showFrom: false }); }} variant="contained" color='warning'>取消</Button>
+        <Button onClick={() => {
             //console.log('我想知道问题', attend)
             if(!ediID){
               
@@ -92,9 +111,18 @@ class AddEditForm extends Component {
               onAddEdit(editeEmployee)
 
            }}}
-          >{ediID?'修改':'添加'}</button>
-      </div>
+              
+        
+        variant="contained">{ediID?'修改':'添加'}</Button>
+        </FormControl>
 
+
+
+
+       
+      </div>
+      </Modal>
+      </Box>
 
       )}}
 
